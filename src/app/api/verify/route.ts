@@ -369,6 +369,14 @@ export async function POST(req: NextRequest) {
       body.assetDescription ?? ""
     );
 
+    // Approval rule: 3 of 4 checks passing is enough to approve, regardless
+    // of the model's own status label. Fewer than 3: reject if any check
+    // failed outright, otherwise send to manual review.
+    const checkList = Object.values(verdict.checks);
+    const passCount = checkList.filter((c) => c.status === "pass").length;
+    const anyFail = checkList.some((c) => c.status === "fail");
+    verdict.status = passCount >= 3 ? "approve" : anyFail ? "reject" : "review";
+
     let liveness: LivenessResult | null = null;
     if (body.selfieImageBase64) {
       liveness = await runLivenessCheck(body.documentImageBase64, body.selfieImageBase64);
