@@ -125,7 +125,7 @@ Respond ONLY with valid JSON — no markdown fences, no <think> tags, no reasoni
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "qwen/qwen3.6-27b",
+      model: process.env.GROQ_VISION_MODEL || "qwen/qwen3.8-27b",
       messages: [
         {
           role: "user",
@@ -309,7 +309,7 @@ Respond ONLY with valid JSON — no markdown fences, no <think> tags, no reasoni
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "qwen/qwen3.6-27b",
+      model: process.env.GROQ_VISION_MODEL || "qwen/qwen3.8-27b",
       messages: [
         {
           role: "user",
