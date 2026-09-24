@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  /* OpenSea-style dark base: near-black page background throughout (not just
+     the sidebar), raised dark-grey surfaces for cards/panels, light text.
+     Gold marks verification/price accents; sage/clay mark BFP movement. */
+  --color-ink: #0a0a0a;            /* page background */
+  --color-ink-raised: #151515;     /* raised panels/sidebar */
+  --color-surface: #1a1a1a;        /* card surfaces on dark bg */
+  --color-surface-hover: #222222;  /* card hover state */
+  --color-parchment: #ffffff;      /* kept for legacy light surfaces (unused on new pages) */
+  --color-parchment-dim: #f5f5f5;
+  --color-seal-gold: #b8862b;      /* verification / accent */
+  --color-seal-gold-soft: #d9a94a;
+  --color-sage: #1a9e6b;           /* BFP up / positive */
+  --color-clay: #d64545;           /* BFP down / negative */
+  --color-ink-text: #0a0a0a;       /* kept for legacy light-surface text */
+  --color-text-primary: #ffffff;   /* primary text on dark */
+  --color-text-secondary: #a0a0a0; /* secondary text on dark */
+  --color-muted: #6b6b6b;
+  --color-hairline: #e5e5e5;       /* dividers on white (legacy) */
+  --color-hairline-dark: #2a2a2a;  /* dividers on black */
+}
+
+@theme inline {
+  --color-ink: var(--color-ink);
+  --color-ink-raised: var(--color-ink-raised);
+  --color-surface: var(--color-surface);
+  --color-surface-hover: var(--color-surface-hover);
+  --color-parchment: var(--color-parchment);
+  --color-parchment-dim: var(--color-parchment-dim);
+  --color-seal-gold: var(--color-seal-gold);
+  --color-seal-gold-soft: var(--color-seal-gold-soft);
+  --color-sage: var(--color-sage);
+  --color-clay: var(--color-clay);
+  --color-ink-text: var(--color-ink-text);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-muted: var(--color-muted);
+  --color-hairline: var(--color-hairline);
+  --color-hairline-dark: var(--color-hairline-dark);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+body {
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Small reusable entrance animations — used sparingly (Earn, Swap) rather
+   than site-wide, so motion stays a deliberate accent, not noise. Already
+   covered by the prefers-reduced-motion override above. */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.35s ease-out both;
+}
