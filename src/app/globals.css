@@ -82,3 +82,13 @@ body {
 .animate-fade-in-up {
   animation: fade-in-up 0.35s ease-out both;
 }
+
+/* Native dropdowns: dark popup with readable options (otherwise the option
+   list renders white-on-white on Mac Chrome, so it looks like it won't open). */
+select {
+  color-scheme: dark;
+}
+select option {
+  background-color: #151515;
+  color: #ffffff;
+}
