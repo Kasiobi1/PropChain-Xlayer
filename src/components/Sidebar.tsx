@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -67,7 +68,7 @@ function NavRow({
   );
 }
 
-export function Sidebar() {
+function SidebarInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentType = searchParams.get("type");
@@ -136,5 +137,14 @@ export function Sidebar() {
         </p>
       </div>
     </aside>
+  );
+}
+
+
+export function Sidebar() {
+  return (
+    <Suspense fallback={null}>
+      <SidebarInner />
+    </Suspense>
   );
 }

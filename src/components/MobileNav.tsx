@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -20,7 +20,7 @@ const SECONDARY_ITEMS = [
   { label: "Wallet", href: "/wallet" },
 ];
 
-export function MobileNav() {
+function MobileNavInner() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -107,5 +107,14 @@ export function MobileNav() {
         </div>
       )}
     </div>
+  );
+}
+
+
+export function MobileNav() {
+  return (
+    <Suspense fallback={null}>
+      <MobileNavInner />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Sidebar } from "@/components/Sidebar";
 import { MobileNav } from "@/components/MobileNav";
@@ -15,7 +15,7 @@ import { useRealListings } from "@/lib/useRealListings";
 import { useActiveNetwork } from "@/lib/useActiveNetwork";
 import { groupListingsIntoBatches } from "@/lib/batches";
 
-export default function ComparePage() {
+function BrowseContent() {
   const network = useActiveNetwork();
   const searchParams = useSearchParams();
   const sort = searchParams.get("sort"); // "highest" | "newest" | null — driven by hero slideshow CTAs
@@ -284,5 +284,14 @@ export default function ComparePage() {
         <SiteFooter />
       </div>
     </div>
+  );
+}
+
+
+export default function BrowsePage() {
+  return (
+    <Suspense fallback={null}>
+      <BrowseContent />
+    </Suspense>
   );
 }

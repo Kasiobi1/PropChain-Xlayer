@@ -74,20 +74,20 @@ export async function POST() {
       functionName: "revocationFeeWei",
     })) as bigint;
 
-    const currentFeeEth = Number(formatEther(currentFeeWei));
+    const currentFeeOkb = Number(formatEther(currentFeeWei));
     const driftPercent =
-      currentFeeEth === 0
+      currentFeeOkb === 0
         ? 100
-        : Math.abs((targetEthAmount - currentFeeEth) / currentFeeEth) * 100;
+        : Math.abs((targetOkbAmount - currentFeeOkb) / currentFeeOkb) * 100;
 
     if (driftPercent < DRIFT_THRESHOLD_PERCENT) {
       return NextResponse.json({
         updated: false,
         reason: `Drift (${driftPercent.toFixed(1)}%) below ${DRIFT_THRESHOLD_PERCENT}% threshold — no update needed.`,
-        ethUsdPrice,
+        okbUsdPrice,
         currentFeeWei: currentFeeWei.toString(),
-        currentFeeEth,
-        targetFeeEth: targetEthAmount,
+        currentFeeOkb,
+        targetFeeOkb: targetOkbAmount,
       });
     }
 
@@ -104,11 +104,11 @@ export async function POST() {
       updated: true,
       transactionHash: hash,
       status: receipt.status,
-      ethUsdPrice,
+      okbUsdPrice,
       previousFeeWei: currentFeeWei.toString(),
-      previousFeeEth: currentFeeEth,
+      previousFeeOkb: currentFeeOkb,
       newFeeWei: targetWei.toString(),
-      newFeeEth: targetEthAmount,
+      newFeeOkb: targetOkbAmount,
       driftPercent,
     });
   } catch (err) {
