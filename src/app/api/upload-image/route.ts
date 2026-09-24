@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
       // normalizeImageUrl() points this at Pinata's dedicated gateway —
       // see src/lib/assetMetadata.ts for why the dedicated domain is
       // used instead of the shared gateway.pinata.cloud.
-      url: normalizeImageUrl(`https://plum-decisive-horse-820.mypinata.cloud/ipfs/${cid}`),
+      url: normalizeImageUrl(`ipfs://${cid}`),
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Image upload failed.";

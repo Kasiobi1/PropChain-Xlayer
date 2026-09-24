@@ -17,7 +17,7 @@
 // The shared gateway.pinata.cloud 404s on freshly-pinned content, so the
 // dedicated domain is the only one that reliably serves this account's
 // uploads.
-export const PINATA_GATEWAY_HOST = "plum-decisive-horse-820.mypinata.cloud";
+export const PINATA_GATEWAY_HOST = "ivory-real-peafowl-675.mypinata.cloud";
 
 // Ordered by likelihood of success: the account's own dedicated gateway
 // first (content is pinned there, so it's always a hit and isn't subject
@@ -111,6 +111,13 @@ export function normalizeImageUrl(url: string): string {
   const deadGateway = trimmed.match(/^https:\/\/ipfs\.ninja\/ipfs\/(.+)$/i);
   if (deadGateway) {
     return `https://${PINATA_GATEWAY_HOST}/ipfs/${deadGateway[1]}`;
+  }
+
+  // Any other Pinata dedicated-gateway URL (e.g. one baked into token
+  // metadata minted against an earlier gateway) -> the current gateway.
+  const otherPinata = trimmed.match(/^https:\/\/[a-z0-9-]+\.mypinata\.cloud\/ipfs\/(.+)$/i);
+  if (otherPinata) {
+    return `https://${PINATA_GATEWAY_HOST}/ipfs/${otherPinata[1]}`;
   }
 
   return trimmed;

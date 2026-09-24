@@ -101,7 +101,7 @@ export function getPublicClient() {
   const rpcUrls = Array.from(
     new Set([
       rpcUrl,
-      ...(ACTIVE_CHAIN.id === xLayerTestnet.id ? ["https://xlayertestrpc.okx.com/terigon"] : []),
+      ...(ACTIVE_CHAIN.id === xLayerTestnet.id ? [] : []),
     ])
   );
   cachedPublicClient = createPublicClient({

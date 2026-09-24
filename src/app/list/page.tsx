@@ -333,12 +333,18 @@ export default function ListAssetPage() {
       if (!walletClient || !publicClient) throw new Error("No wallet provider found.");
 
       setListProgress({ phase: "approving", done: 0, total: 1 });
-      const alreadyApproved = await publicClient.readContract({
+      let alreadyApproved = false;
+      try {
+        alreadyApproved = (await publicClient.readContract({
         address: CONTRACT_ADDRESSES.assetNFT,
         abi: ASSET_NFT_ABI,
         functionName: "isApprovedForAll",
         args: [address, CONTRACT_ADDRESSES.marketplace],
-      });
+      })) as boolean;
+      } catch {
+        // RPC read failed or timed out. Fall through and ask the wallet to
+        // approve; re-granting an existing approval is harmless.
+      }
       if (!alreadyApproved) {
         const approveHash = await walletClient.writeContract({
           address: CONTRACT_ADDRESSES.assetNFT,
