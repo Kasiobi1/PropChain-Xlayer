@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { createPublicClient, createWalletClient, custom, http, type Abi, type Address } from "viem";
+import { createPublicClient, createWalletClient, custom, fallback, http, type Abi, type Address } from "viem";
 import { xLayerTestnet, xLayerMainnet } from "./xLayerChain";
 import { getActiveNetwork } from "./networkPreference";
 import { discoverWallets, getSelectedProviderSync } from "./walletProviders";
@@ -98,9 +98,15 @@ export function getPublicClient() {
     (ACTIVE_CHAIN.id === xLayerTestnet.id
       ? process.env.NEXT_PUBLIC_XLAYER_RPC_URL
       : undefined) || ACTIVE_CHAIN.rpcUrls.default.http[0];
+  const rpcUrls = Array.from(
+    new Set([
+      rpcUrl,
+      ...(ACTIVE_CHAIN.id === xLayerTestnet.id ? ["https://xlayertestrpc.okx.com/terigon"] : []),
+    ])
+  );
   cachedPublicClient = createPublicClient({
     chain: ACTIVE_CHAIN,
-    transport: http(rpcUrl, { retryCount: 3, retryDelay: 1000, timeout: 20_000 }),
+    transport: fallback(rpcUrls.map((u) => http(u, { retryCount: 1, timeout: 15_000 }))),
   });
   return cachedPublicClient;
 }
